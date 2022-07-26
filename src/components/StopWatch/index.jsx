@@ -7,13 +7,42 @@ class StopWatch extends Component {
     this.state = {
       time: new Date(0, 0, 0, 0, 0, 0),
     };
+    this.timerId = null;
   }
 
-  handlerStart = () => {};
+  tick = () => {
+    this.setState((state) => {
+      const newTime = state.time.getTime() + 1000;
+      return { time: new Date(newTime) };
+    });
+  };
 
-  handlerStop = () => {};
+  handlerStart = () => {
+    if (this.timerId === null) {
+      this.timerId = setTimeout(this.tick, 1000);
+    }
+  };
 
-  handlerRestart = () => {};
+  handlerStop = () => {
+    clearTimeout(this.timerId);
+    this.timerId = null;
+  };
+
+  handlerRestart = () => {
+    this.handlerStop();
+    this.setState({ time: new Date(0, 0, 0, 0, 0, 0) });
+  };
+
+  componentDidUpdate() {
+    if (this.timerId !== null) {
+      this.timerId = null;
+      this.handlerStart();
+    }
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this.timerId);
+  }
 
   render() {
     const { time } = this.state;
