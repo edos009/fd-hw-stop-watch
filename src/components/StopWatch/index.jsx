@@ -28,7 +28,7 @@ class StopWatch extends Component {
     this.timerId = null;
   };
 
-  handlerRestart = () => {
+  handlerReset = () => {
     this.handlerStop();
     this.setState({ time: new Date(0, 0, 0, 0, 0, 0) });
   };
@@ -48,13 +48,32 @@ class StopWatch extends Component {
     const { time } = this.state;
     return (
       <>
-        <h1>Stopwatch</h1>
-        <article>
-          <p>{time.toLocaleTimeString("en-GB")}</p>
-          <div>
-            <button onClick={this.handlerStart}>Start</button>
-            <button onClick={this.handlerStop}>Stop</button>
-            <button onClick={this.handlerRestart}>Restart</button>
+        <h1 className={s.title}>
+          <span>Stop</span>
+          <span>Watch</span>
+        </h1>
+        <article className={s.article}>
+          <p className={s.watch}>{time.toLocaleTimeString("en-GB")}</p>
+          <div className={s.block_btns}>
+            <button
+              className={`${s.btn} ${s.btn_start}`}
+              onClick={this.handlerStart}
+            >
+              Start
+            </button>
+            <button
+              className={`${s.btn} ${s.btn_stop}`}
+              onClick={this.handlerStop}
+            >
+              Stop
+            </button>
+
+            <button
+              className={`${s.btn} ${s.btn_reset}`}
+              onClick={this.handlerReset}
+            >
+              Reset
+            </button>
           </div>
         </article>
       </>
