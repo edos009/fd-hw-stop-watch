@@ -77,3 +77,8 @@
 .btn_reset:hover{
   background-color: #cf5600;
 }
+
+.active_start, .active_stop{
+  border: 3px solid #fff;
+}
+

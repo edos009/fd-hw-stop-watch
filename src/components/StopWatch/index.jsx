@@ -6,6 +6,8 @@ class StopWatch extends Component {
     super(props);
     this.state = {
       time: new Date(0, 0, 0, 0, 0, 0),
+      isStartActive: false,
+      isStopActive: false,
     };
     this.timerId = null;
   }
@@ -13,7 +15,11 @@ class StopWatch extends Component {
   tick = () => {
     this.setState((state) => {
       const newTime = state.time.getTime() + 1000;
-      return { time: new Date(newTime) };
+      return {
+        time: new Date(newTime),
+        isStartActive: true,
+        isStopActive: false,
+      };
     });
   };
 
@@ -26,11 +32,16 @@ class StopWatch extends Component {
   handlerStop = () => {
     clearTimeout(this.timerId);
     this.timerId = null;
+    this.setState({ isStartActive: false, isStopActive: true });
   };
 
   handlerReset = () => {
     this.handlerStop();
-    this.setState({ time: new Date(0, 0, 0, 0, 0, 0) });
+    this.setState({
+      time: new Date(0, 0, 0, 0, 0, 0),
+      isStartActive: false,
+      isStopActive: false,
+    });
   };
 
   componentDidUpdate() {
@@ -45,7 +56,7 @@ class StopWatch extends Component {
   }
 
   render() {
-    const { time } = this.state;
+    const { time, isStartActive, isStopActive } = this.state;
     return (
       <>
         <h1 className={s.title}>
@@ -56,13 +67,17 @@ class StopWatch extends Component {
           <p className={s.watch}>{time.toLocaleTimeString("en-GB")}</p>
           <div className={s.block_btns}>
             <button
-              className={`${s.btn} ${s.btn_start}`}
+              className={`${isStartActive ? s.active_start : null} ${s.btn} ${
+                s.btn_start
+              }`}
               onClick={this.handlerStart}
             >
               Start
             </button>
             <button
-              className={`${s.btn} ${s.btn_stop}`}
+              className={`${isStopActive ? s.active_stop : null} ${s.btn} ${
+                s.btn_stop
+              }`}
               onClick={this.handlerStop}
             >
               Stop
